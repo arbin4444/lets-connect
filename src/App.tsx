@@ -8,7 +8,7 @@ function App() {
 
   return (
     <>
-     <div className="min-h-screen w-full bg-[#FAFBFD]">
+     <div className="min-h-screen w-full bg-gradient-to-br from-pink-100 to-purple-100">
       <BrowserRouter>
       <Routes>
         <Route path="/" element={<ConnectSignup/>}/>
