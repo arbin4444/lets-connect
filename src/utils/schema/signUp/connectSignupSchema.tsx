@@ -1,7 +1,13 @@
 import Joi from "joi";
 
 export const ConnectSignUpSchema = Joi.object({
-  userName: Joi.string().alphanum().min(3).max(20).required(),
+  userName: Joi.string().alphanum().min(3).max(20).required()
+    .messages({
+      "string.empty" : "Username is required",
+      "string.alphanum" : "Username must only contain number and alphabet",
+      "string.min": "Minimum 3 character is required",
+      "string.max": "Maximum 20 character is required"
+    }),
 
   email: Joi.string()
     .email({
@@ -9,7 +15,10 @@ export const ConnectSignUpSchema = Joi.object({
       ignoreLength: false,
       allowFullyQualified: true,
     })
-    .required(),
+    .required()
+    .messages({
+      "string.empty":"PLease enter valid email",
+    }),
 
   password: Joi.string()
     .pattern(
@@ -17,5 +26,8 @@ export const ConnectSignUpSchema = Joi.object({
         "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+=-]).{8,30}$"
       )
     )
-    .required(),
+    .required()
+    .messages({
+      "string.empty":"Password is required"
+    })
 });

@@ -11,7 +11,7 @@ export const ConnectSignup: React.FC = () => {
   const [userName, setUsername]=useState("");
   const [email, setEmail]= useState("");
   const [password, setPassword]=useState("");
-  // const [signUpErrors,setSignUpErrors]=useState<{[key:string]:string}>();
+  const [signUpValidationErrors,setSignUpValidationErrors]= useState<Record<string,string>>({});
 
 
 
@@ -36,13 +36,16 @@ export const ConnectSignup: React.FC = () => {
       email,
       password
     }
-    const validatedSignUpForm = ConnectSignUpSchema.validate(formValue, {abortEarly:false});
-    console.log(validatedSignUpForm);
-    // const errors = validatedSignUpForm.error?.details;
-    // const mappedError= errors?.forEach((err)=>{
-      
-    // })
-    // setSignUpErrors(errors);
+    const {error}= ConnectSignUpSchema.validate(formValue,{abortEarly:false});
+
+    if(error){
+      const errors = Object.fromEntries(
+        error.details.map((err)=>[err.context?.key,err.message])
+      );
+      setSignUpValidationErrors(errors);
+    }else{
+      setSignUpValidationErrors({});
+    }
   }
 
   return (
@@ -58,13 +61,16 @@ export const ConnectSignup: React.FC = () => {
         <div className="flex flex-col gap-[22px] mt-[20px] w-full max-w-[448px]">
           <div className="flex flex-col gap-[12px]">
             <p className="text-[18px]">Username</p>
+            <div>
             <input
-              className="h-[42px] focus:outline-none focus:ring-0 border-[1px] rounded-[6px] text-[17px] px-[10px] py-[6px] bg-gradient-to-br from-pink-100 to-purple-50"
+              className="h-[42px] w-full focus:outline-none focus:ring-0 border-[1px] rounded-[6px] text-[17px] px-[10px] py-[6px] bg-gradient-to-br from-pink-100 to-purple-50"
               type="text"
               placeholder="Username"
               value={userName}
               onChange={OnHandleChangeUsername}
             />
+            {signUpValidationErrors.userName && <p className="text-[#FF0000]">{signUpValidationErrors.userName}</p>}
+            </div>
           </div>
           {/* <div className="flex flex-col gap-[12px]">
             <p className="text-[18px]">Last Name</p>
@@ -76,23 +82,29 @@ export const ConnectSignup: React.FC = () => {
           </div> */}
           <div className="flex flex-col gap-[12px]">
             <p className="text-[18px]">Email</p>
+            <div>
             <input
-              className="h-[42px] focus:outline-none focus:ring-0 border-[1px] rounded-[6px] text-[17px] px-[10px] py-[6px] bg-gradient-to-br from-pink-100 to-purple-50"
+              className="h-[42px] w-full focus:outline-none focus:ring-0 border-[1px] rounded-[6px] text-[17px] px-[10px] py-[6px] bg-gradient-to-br from-pink-100 to-purple-50"
               type="text"
               placeholder="Email"
               value={email}
               onChange={OnHandleChangeEmail}
             />
+            {signUpValidationErrors.email && <p className="text-[#FF0000]">{signUpValidationErrors.email}</p>}
+            </div>
           </div>
           <div className="flex flex-col gap-[12px]">
             <p className="text-[18px]">Password</p>
+            <div>
             <input
-              className="h-[42px] focus:outline-none focus:ring-0 border-[1px] rounded-[6px] text-[17px] px-[10px] py-[6px] bg-gradient-to-br from-pink-100 to-purple-50"
+              className="h-[42px] w-full focus:outline-none focus:ring-0 border-[1px] rounded-[6px] text-[17px] px-[10px] py-[6px] bg-gradient-to-br from-pink-100 to-purple-50"
               type="password"
               placeholder="Password"
               value={password}
               onChange={OnHandleChangePassword}
             />
+            {signUpValidationErrors.password && <p className="text-[#FF0000]">{signUpValidationErrors.password}</p>}
+            </div>
           </div>
           <div className="flex justify-center">
             <CommonButton

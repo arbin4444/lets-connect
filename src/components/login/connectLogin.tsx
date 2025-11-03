@@ -1,20 +1,41 @@
 import React, { useState } from "react";
 import { CommonButton } from "../../sharedComponent/button/commonButton";
 import { GoogleLogo } from "../../assets/connectLogo/googleLogo";
+import {ConnectSignInSchema} from "../../utils/schema/signIn/connectSignInSchema"
+
 
 export const ConnectLogin: React.FC = () => {
-  const [userNameEmail, setUserNameEmail]=useState()
-  const [password,setPassword]=useState()
+  const [userNameEmail, setUserNameEmail]=useState("")
+  const [password,setPassword]=useState("")
+  const [signInValidationErrors,setSignInValidationErrors]=useState<Record<string,string>>({});
 
-  const OnHandleChangeNameEmail=(e:any)=>{
+  const onHandleChangeNameEmail=(e:any)=>{
     e.preventDefault();
     setUserNameEmail(e.target.value)
   }
 
-  const OnHandleChangePassword=(e:any)=>{
+  const onHandleChangePassword=(e:any)=>{
     e.preventDefault();
     setPassword(e.target.value)
   }
+
+
+  const onClickSignInButton=()=>{
+    const signInFormValue = {
+      userNameEmail,password
+    }
+
+    const {error} = ConnectSignInSchema.validate(signInFormValue, {abortEarly:false})
+    if(error){
+    const errors = Object.fromEntries(
+      error?.details.map((err)=>[err.context?.key,err.message])
+    );
+    setSignInValidationErrors(errors);
+  } else {
+    setSignInValidationErrors({})
+  }
+  }
+
   return (
     <>
       <div className="flex h-screen w-screen flex-col justify-center items-center">
@@ -33,8 +54,9 @@ export const ConnectLogin: React.FC = () => {
               type="text"
               placeholder="Username or Email"
               value={userNameEmail}
-              onChange={OnHandleChangeNameEmail}
+              onChange={onHandleChangeNameEmail}
             />
+            {signInValidationErrors.userNameEmail && <p className="text-[#FF0000]">{signInValidationErrors.userNameEmail}</p>}
           </div>
           <div className="flex flex-col gap-[12px]">
             <p className="text-[18px]">Password</p>
@@ -43,14 +65,16 @@ export const ConnectLogin: React.FC = () => {
               type="password"
               placeholder="Password"
               value={password}
-              onChange={OnHandleChangePassword}
+              onChange={onHandleChangePassword}
             />
+            {signInValidationErrors.password && <p className="text-[#FF0000]">{signInValidationErrors.password}</p>}
             <p className="text-[#277be8]">forgot password?</p>
           </div>
           <div className="flex justify-center">
             <CommonButton
               title="Sign in"
               className="text-white w-full text-[18px]"
+              onClick={onClickSignInButton}
             />
           </div>
           <div className="flex items-center gap-[6px]">
