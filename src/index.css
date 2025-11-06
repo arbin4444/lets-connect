@@ -72,6 +72,11 @@ button:focus-visible {
 @tailwind components;
 @tailwind utilities;
 
+@import "swiper/css";
+@import "swiper/css/navigation";
+@import "swiper/css/pagination";
+
+
 @layer base {
   :root {
     --background: 0 0% 100%;
