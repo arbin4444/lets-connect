@@ -1,12 +1,6 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
-
-
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-
 import cloth3 from "../../assets/clothes/cloth3.jpg";
 import cloth7 from "../../assets/clothes/cloth7.jpg";
 import cloth9 from "../../assets/clothes/cloth9.jpg";
@@ -19,6 +13,10 @@ import top5 from "../../assets/topProducts/top5.jpg";
 import top6 from "../../assets/topProducts/top6.jpg";
 import top7 from "../../assets/topProducts/top7.jpg";
 import top8 from "../../assets/topProducts/top8.jpg";
+
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 export const ConnectLandingPage: React.FC = () => {
   const topProducts = [top1, top2, top3, top4, top5, top6, top7, top8];
